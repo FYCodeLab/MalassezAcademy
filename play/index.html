@@ -23,6 +23,7 @@ header img{height:100%;width:auto;display:block;background:var(--logobg);border-
 .slide{flex:0 0 auto;border-radius:6px;overflow:hidden;background:#fff;position:relative}
 .credit{position:absolute;left:8px;bottom:8px;z-index:5;display:flex;align-items:center;gap:4px;background:rgba(255,255,255,.88);border:1px solid var(--line);border-radius:8px;padding:2px 7px 2px 4px;font:10px/1 system-ui,sans-serif;color:#58707c;text-decoration:none}
 .credit img{height:14px;width:auto;display:block}
+@media (hover:none) and (pointer:coarse){.credit{left:auto;right:8px;font-size:9px;gap:3px;padding:2px 6px 2px 3px}.credit img{height:11px}}
 svg{display:block;width:100%;height:100%}
 .panel{flex:1;min-width:0;min-height:0;border:1px solid var(--line);border-radius:10px;padding:.7em .8em;overflow:hidden;display:flex;flex-direction:column;gap:.45em;font-size:var(--fs,12px);line-height:1.25}
 .panel h2{margin:0;font-size:.95em;color:var(--navy);white-space:nowrap}
@@ -152,11 +153,13 @@ function layout(){
  hd.style.setProperty("--hh",hh+"px");
  const lw=ly.clientWidth-10,lh=ly.clientHeight-10;
  const ratio=815/828,gap=6,minPanel=Math.min(190,lw*.4);
+ const coarse=matchMedia("(pointer:coarse)").matches;
  const sh=Math.max(40,Math.min(lh,(lw-gap-minPanel)/ratio));
  sl.style.height=sh+"px";sl.style.width=sh*ratio+"px";
  const pw=lw-gap-sh*ratio;
- pn.style.maxWidth=Math.max(minPanel,pw)+"px";
- const ph=lh,pwi=Math.max(minPanel,pw);
+ const pwi=Math.min(coarse?250:1e9,Math.max(minPanel,pw));
+ pn.style.maxWidth=pwi+"px";
+ const ph=lh;
  const fs=Math.max(6,Math.min(18,ph/34,pwi/16));
  pn.style.setProperty("--fs",fs+"px");
 }
