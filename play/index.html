@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Malassez Academy v1.3 | SupBiotech</title>
+<style>
+:root{--bg:#eef2ed;--card:#fff;--ink:#173a4b;--navy:#003e58;--green:#b6d747;--green2:#8db52e;--line:#dce6d4;--muted:#58707c;--ok:#f1f8e9;--low:#fff2ef;--lowb:#dc9b8e;--inbg:#fff;--inb:#afc2c8;--sec:#e4edf0;--logobg:transparent;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1a20;--card:#14262e;--ink:#e3eef2;--navy:#e3eef2;--line:#26404a;--muted:#9ab2bb;--ok:#1d3320;--low:#3a1f1b;--inbg:#0e1a20;--inb:#3d5964;--sec:#26404a;--logobg:#fff;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0e1a20;--card:#14262e;--ink:#e3eef2;--navy:#e3eef2;--line:#26404a;--muted:#9ab2bb;--ok:#1d3320;--low:#3a1f1b;--inbg:#0e1a20;--inb:#3d5964;--sec:#26404a;--logobg:#fff;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;overflow:hidden;background:#fff}
+body{color:var(--ink);font-family:-apple-system,Arial,sans-serif;position:fixed;inset:0;touch-action:manipulation}
+#app{position:fixed;top:0;left:0;width:100%;max-width:1180px;height:100%;left:50%;transform:translateX(-50%);border:1.5px solid var(--green);border-radius:8px;background:var(--card);display:flex;flex-direction:column;overflow:hidden}
+html.force #app{left:0;max-width:none;transform-origin:top left;transform:rotate(90deg) translateY(-100%)}
+header{flex:0 0 auto;display:flex;align-items:center;gap:8px;padding:2px 8px;border-bottom:1px solid var(--line);height:var(--hh,22px)}
+header img{height:100%;width:auto;display:block;background:var(--logobg);border-radius:3px;padding:1px 3px}
+.logo{font-weight:900;letter-spacing:-.5px;color:var(--navy);font-size:calc(var(--hh,22px)*.6);line-height:1;white-space:nowrap}
+.logo span{color:var(--green2)}
+.brand{margin-left:auto;font-family:'Poppins','Montserrat','Arial Black',Arial,sans-serif;font-weight:800;font-size:calc(var(--hh,22px)*.62);color:var(--navy);letter-spacing:-.3px;white-space:nowrap}
+.brand span{color:var(--green2)}
+.layout{flex:1;min-height:0;display:flex;gap:6px;padding:5px;justify-content:center}
+.slide{flex:0 0 auto;border-radius:6px;overflow:hidden;background:#fff}
+svg{display:block;width:100%;height:100%}
+.panel{flex:1;min-width:0;min-height:0;border:1px solid var(--line);border-radius:10px;padding:.7em .8em;overflow:hidden;display:flex;flex-direction:column;gap:.45em;font-size:var(--fs,12px);line-height:1.25}
+.panel h2{margin:0;font-size:.95em;color:var(--navy);white-space:nowrap}
+.sn{margin:0;font-size:.8em;color:var(--muted)}
+label{font-weight:bold;font-size:.85em}
+#disp{width:100%;height:calc(var(--fs,12px)*2.8);display:flex;align-items:center;justify-content:flex-end;padding:0 .5em;font-size:1.5em;font-weight:bold;border:2px solid var(--inb);border-radius:.4em;background:var(--inbg);color:var(--ink);flex:0 0 auto;overflow:hidden}
+.note{font-size:.72em;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:-.2em}
+#disp.ph{font-weight:normal;font-size:1em;color:var(--muted);justify-content:center}
+#pad{flex:0 0 auto;height:calc(var(--fs,12px)*9.4);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(4,1fr);gap:.55em;padding-inline:1em}
+#pad button{height:auto;min-height:0;font-size:1.15em;background:var(--sec);color:var(--navy);border-radius:.5em}
+#pad button:active{background:var(--green)}
+#pad button.fn{background:#003e58;color:#fff;font-size:1.1em}
+.btns{display:flex;gap:.4em}
+button{flex:1;min-width:0;height:2.3em;padding:0 .3em;border:0;border-radius:.6em;background:#003e58;color:#fff;font-weight:bold;font-size:.9em;white-space:nowrap}
+button.sec{background:var(--sec);color:var(--navy)}
+button:disabled{opacity:.5}
+#result{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:.25em;padding:.5em .7em;background:var(--ok);border:2px solid var(--green2);border-radius:.7em;font-size:1em;line-height:1.2;overflow:hidden}
+#result.low{background:var(--low);border-color:#d9534f}
+#result.idle{background:transparent;border:2px dashed var(--inb);color:var(--muted);align-items:stretch;font-size:.85em}
+#feedback{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:.35em;text-align:center;flex:1;min-height:0}
+#result .acc{font-size:1.9em;font-weight:900;line-height:1}
+#result .msg{font-size:1.05em;font-weight:bold}
+#result .row{font-size:.85em;white-space:nowrap}
+#result sup{font-size:.7em;line-height:0}
+#score{margin-top:auto;padding-top:.65em;text-align:center;font-weight:900;font-size:1.55em;color:var(--navy)}
+#result.idle #score{color:var(--navy)}
+#result .row{white-space:normal} 
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@800&display=swap" rel="stylesheet">
+</head>
+<body>
+<div id="app">
+ <header id="hd">
+  <img id="lg" alt="SupBiotech" src="https://newsroom.supbiotech.fr/wp-content/uploads/2023/03/LOGO-SUPBIO-2023-QUADRI.png">
+  <div class="brand">Malassez <span>Academy</span></div>
+ </header>
+ <div class="layout" id="ly">
+  <div class="slide" id="sl"><img id="loading" alt="Loading the Malassez counting chamber" src="https://raw.githubusercontent.com/FYCodeLab/MalassezAcademy/main/assets/MAL5.gif" style="display:none;width:100%;height:100%;object-fit:contain"/><svg id="slide" viewBox="0 0 815 828" aria-label="Virtual cell counting grid">
+   <image href="https://raw.githubusercontent.com/FYCodeLab/MalassezAcademy/main/assets/malassez-grid.jpg" x="0" y="0" width="815" height="828"/><g id="cells"></g></svg></div>
+  <section class="panel" id="pn">
+   <p class="sn" id="sn">Slide 1</p>
+   <h2>What is the cell concentration?</h2>
+   <label for="disp">Your answer (cells/mL)</label>
+   <div id="disp" class="ph">Tap the numbers</div>
+   <div class="note">1 µL grid · concentration (cells/mL) = count × 10³</div>
+   <div id="pad"><button type="button" data-k="1">1</button><button type="button" data-k="2">2</button><button type="button" data-k="3">3</button><button type="button" data-k="4">4</button><button type="button" data-k="5">5</button><button type="button" data-k="6">6</button><button type="button" data-k="7">7</button><button type="button" data-k="8">8</button><button type="button" data-k="9">9</button><button type="button" data-k="C" class="fn">C</button><button type="button" data-k="0">0</button><button type="button" data-k="B" class="fn">⌫</button></div>
+   <div class="btns"><button id="check" type="button">Check answer</button><button id="new" class="sec" type="button">New slide</button></div>
+   <div id="result" class="idle" aria-live="polite"><div id="feedback">Your result will appear here</div><div id="score">Your Score : --%</div></div>
+  </section>
+ </div>
+</div>
+
+<script>
+(()=>{
+const NS="http://www.w3.org/2000/svg",$=id=>document.getElementById(id),
+g=$("cells"),disp=$("disp"),pad=$("pad"),chk=$("check"),nb=$("new"),res=$("result"),sn=$("sn"),
+app=$("app"),root=document.documentElement,lg=$("lg"),hd=$("hd"),ly=$("ly"),sl=$("sl"),pn=$("pn"),slideSvg=$("slide"),score=$("score"),feedback=$("feedback");
+let actual=0,idx=0,done=false,val="",transitionTimer=null,loading=$("loading");
+function conc(n){const c=n*1000;if(!c)return"0";const e=Math.floor(Math.log10(c));return(c/10**e).toFixed(2)+" × 10<sup>"+e+"</sup>";}
+function show(){disp.textContent=val||"Tap the numbers";disp.classList.toggle("ph",!val);}
+
+lg.addEventListener("error",()=>{const d=document.createElement("div");d.className="logo";d.innerHTML="SUP<span>BIOTECH</span>";lg.replaceWith(d);});
+
+function draw(){
+ g.replaceChildren();
+ actual=50+Math.floor(Math.random()*250);
+ for(let i=0;i<actual;i++){
+  const r=4.5+Math.random()*3.5,e=document.createElementNS(NS,"ellipse");
+  e.setAttribute("cx",168+Math.random()*563);e.setAttribute("cy",42+Math.random()*709);
+  e.setAttribute("rx",r);e.setAttribute("ry",r*.85);e.setAttribute("fill","#c0392b");
+  e.setAttribute("fill-opacity",.85);e.setAttribute("stroke","#fff");e.setAttribute("stroke-width",.8);
+  g.appendChild(e);
+ }
+}
+function fresh(){
+ const changing=idx>0;
+ idx++;done=false;val="";show();disp.style.borderColor="";
+ chk.disabled=changing;nb.disabled=changing;
+ res.className="idle";feedback.textContent=changing?"Loading the next slide…":"Your result will appear here";
+ score.textContent="Your Score : --%";sn.textContent="Slide "+idx;
+ clearTimeout(transitionTimer);
+ if(changing){
+  slideSvg.style.display="none";
+  // A newly created image is more reliable than reusing the same GIF on iOS Safari.
+  const next=document.createElement("img");
+  next.id="loading";
+  next.alt="Loading the Malassez counting chamber";
+  next.style.cssText="display:block;width:100%;height:100%;object-fit:contain";
+  loading.replaceWith(next);
+  loading=next;
+  const currentSlide=idx;
+  let started=false;
+  function startDisplay(){
+   if(started||currentSlide!==idx)return;
+   started=true;
+   clearTimeout(transitionTimer);
+   transitionTimer=setTimeout(()=>{
+    if(currentSlide!==idx)return;
+    draw();loading.style.display="none";slideSvg.style.display="block";
+    chk.disabled=false;nb.disabled=false;
+    feedback.textContent="Your result will appear here";layout();
+   },2500);
+  }
+  next.onload=startDisplay;
+  next.onerror=startDisplay;
+  // Fallback if a network or Safari event never fires.
+  transitionTimer=setTimeout(startDisplay,4000);
+  next.src="https://raw.githubusercontent.com/FYCodeLab/MalassezAcademy/main/assets/MAL5.gif?restart="+currentSlide;
+ }else{draw();loading.style.display="none";slideSvg.style.display="block";}
+ layout();
+}
+function check(){
+ if(done)return;
+ const v=val,n=Number(v);
+ if(v===""||!Number.isSafeInteger(n)||n<0){disp.style.borderColor="#d9534f";return;}
+ disp.style.borderColor="";
+ // Accuracy is 100% minus the absolute relative error (not answer/actual as a general rule).
+ const expected=actual*1000,d=n-expected,relativeError=Math.abs(d)/expected;
+ const acc=Math.max(0,100*(1-relativeError));
+ done=true;chk.disabled=true;res.className=acc<85?"low":"";score.textContent="Your Score : "+acc.toFixed(1)+"%";
+ feedback.innerHTML=`<div class="msg">${acc>=85?"That’s right (Counting is always approximate)":d>0?"Your concentration is too high":"Your concentration is too low"}</div><div class="row">Actual: <b>${conc(actual)}</b> cells/mL (${actual} cells counted)</div><div class="row">Yours: <b>${n.toLocaleString("en-US")}</b> cells/mL</div><div class="row">Difference: ${Math.abs(d).toLocaleString("en-US")} cells/mL (${(relativeError*100).toFixed(1)}% error)</div>`;
+}
+function layout(){
+ const W=app.clientWidth,H=app.clientHeight;
+ const hh=Math.max(14,Math.min(28,H*.1));
+ hd.style.setProperty("--hh",hh+"px");
+ const lw=ly.clientWidth-10,lh=ly.clientHeight-10;
+ const ratio=815/828,gap=6,minPanel=Math.min(190,lw*.4);
+ const sh=Math.max(40,Math.min(lh,(lw-gap-minPanel)/ratio));
+ sl.style.height=sh+"px";sl.style.width=sh*ratio+"px";
+ const pw=lw-gap-sh*ratio;
+ pn.style.maxWidth=Math.max(minPanel,pw)+"px";
+ const ph=lh,pwi=Math.max(minPanel,pw);
+ const fs=Math.max(6,Math.min(18,ph/34,pwi/16));
+ pn.style.setProperty("--fs",fs+"px");
+}
+function fit(){
+ const w=window.innerWidth,h=window.innerHeight;
+ if(h>w){root.classList.add("force");app.style.width=h+"px";app.style.height=w+"px";}
+ else{root.classList.remove("force");app.style.width="100%";app.style.height="100%";}
+ layout();
+}
+chk.addEventListener("click",check);nb.addEventListener("click",fresh);
+pad.addEventListener("click",e=>{const b=e.target.closest("button");if(!b||done)return;const k=b.dataset.k;disp.style.borderColor="";if(k==="C")val="";else if(k==="B")val=val.slice(0,-1);else if(val.length<15)val=(val+k).replace(/^0+(?=\d)/,"");show();});
+window.addEventListener("resize",fit);
+window.addEventListener("orientationchange",()=>setTimeout(fit,150));
+document.addEventListener("click",()=>{try{screen.orientation.lock("landscape").catch(()=>{});}catch(e){}},{once:true});
+fresh();fit();
+})();
+</script>
+</body>
+</html>
