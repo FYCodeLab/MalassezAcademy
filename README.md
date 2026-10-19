@@ -21,6 +21,14 @@ MalassezAcademy is an **online game that teaches students how to count cells on 
 
 ---
 
+## 🛠️ Origins
+
+This interactive game was originally built in **p5.js** (JavaScript) — try the original sketch here: [Malassez Academy on the p5.js editor](https://editor.p5js.org/frank.yates/full/OV6pjS93o) (source archived in [`p5js/sketch.js`](p5js/sketch.js)).
+
+A standalone **HTML + JS version** is now fully functional — no libraries, no build step, playable on phones too.
+
+---
+
 ## 🖼️ Assets
 
 - `assets/game-screenshot.jpg` — the game in action
